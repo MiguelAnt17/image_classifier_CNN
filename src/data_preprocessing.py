@@ -16,9 +16,9 @@ import random
 from pathlib import Path
 from PIL import Image
 
-# =============================================================================
+# =============================================================================================================
 #  Preprocessing Function
-# =============================================================================
+# =============================================================================================================
 def preprocess_image(source_path, dest_path, target_size=(224, 224)):
     """
     Opens an image, applies padding to make it square, resizes
@@ -61,9 +61,9 @@ def preprocess_image(source_path, dest_path, target_size=(224, 224)):
         print(f"Failed to process {source_path}: {e}")
 
 
-# =============================================================================
+# =============================================================================================================
 #  2. Function to split the data(train/validation/test) and process the dataset (all classes)
-# =============================================================================
+# =============================================================================================================
 def process_and_split_dataset(source_dir, processed_dir, split_ratios=(0.8, 0.1, 0.1)):
     """
     It goes through the raw data directory, divides the files into training, validation and test,
