@@ -19,3 +19,6 @@ The dataset used for this project contains 28000 medium quality images belonging
 - Dense Layer: Learning the features combinations (512 neurons, act. funct. ReLU)
 - Dropout: 50% of the neurons (prevents overfitting)
 - Output: Number of Classes (act. funct. Softmax)
+
+
+- train summary, model summary
