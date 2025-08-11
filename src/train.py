@@ -2,6 +2,7 @@ import tensorflow as tf
 import os
 from datetime import datetime
 import matplotlib.pyplot as plt
+import json
 
 # Scripts needed to train the model
 from data_loader import load_datasets
@@ -10,42 +11,50 @@ from model_architecture import create_model
 # ===================================================================
 # HYPERPARAMETER AND CONSTANTS DEFINITION
 # ===================================================================
-BASE_DATA_DIR = 'C:\\Users\\Programmer\\processed'
-IMG_SIZE = (224, 224)
-BATCH_SIZE = 32
-EPOCHS = 20
-LEARNING_RATE = 0.001
+config = {
+    "base_data_dir": "C:\\Users\\Programmer\\processed",
+    "experiments_base_dir": "C:\\Users\\Miguel António\\Desktop\\PORTFOLIO\\image_classifier\\experiments",
+    "img_size": (224, 224),
+    "batch_size": 32,
+    "epochs": 20,
+    "learning_rate": 0.001,
+    "early_stopping_patience": 5,
+    "model_architecture_name": "Minha_CNN_Base" 
+}
 
 # ===================================================================
 # UPLOAD THE DATA
 # ===================================================================
 train_ds, val_ds, test_ds, class_names = load_datasets(
-    base_dir=BASE_DATA_DIR,
-    img_size=IMG_SIZE,
-    batch_size=BATCH_SIZE
+    base_dir=config["base_data_dir"],
+    img_size=config["img_size"],
+    batch_size=config["batch_size"]
 )
 
 # ===================================================================
 # EXPERIENCE CONFIGURATION
 # ===================================================================
-EXPERIMENTS_BASE_DIR = 'C:\\Users\\Miguel António\\Desktop\\PORTFOLIO\\image_classifier\\experiments'
-
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-experiment_dir = os.path.join(EXPERIMENTS_BASE_DIR, timestamp)
+experiment_dir = os.path.join(config["experiments_base_dir"], timestamp)
 os.makedirs(experiment_dir, exist_ok=True)
-print(f"\nExperience initialized - Results will be saved in: {experiment_dir}")
+print(f"\nExperience iniatilized - Results saved in : {experiment_dir}")
+
+params_path = os.path.join(experiment_dir, "params.json")
+with open(params_path, 'w') as f:
+    json.dump(config, f, indent=4)
+print(f"Hyperparameter saved in : {params_path}")
 
 model_checkpoint_path = os.path.join(experiment_dir, "best_model.keras")
 # ===================================================================
 # CONSTRUCTION AND COMPILATION OF THE MODEL
 # ===================================================================
-input_shape = (IMG_SIZE[0], IMG_SIZE[1], 3)
+input_shape = (config["img_size"][0], config["img_size"][1], 3)
 num_classes = len(class_names)
 
 model = create_model(input_shape=input_shape, num_classes=num_classes)
 
 model.compile(
-    optimizer=tf.keras.optimizers.Adam(learning_rate=LEARNING_RATE),
+    optimizer=tf.keras.optimizers.Adam(learning_rate=config["learning_rate"]),
     loss='categorical_crossentropy',
     metrics=['accuracy']
 )
@@ -57,14 +66,13 @@ model.summary()
 checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
     filepath=model_checkpoint_path, monitor='val_accuracy', save_best_only=True, verbose=1)
 early_stopping_callback = tf.keras.callbacks.EarlyStopping(
-    monitor='val_loss', patience=5, verbose=1, restore_best_weights=True)
+    monitor='val_loss', patience=config["early_stopping_patience"], verbose=1, restore_best_weights=True)
 
-print(f"\nInicialize training for {EPOCHS} epochs")
+print(f"\nInitializing train per {config['epochs']} epochs")
 history = model.fit(
-    train_ds, validation_data=val_ds, epochs=EPOCHS, 
+    train_ds, validation_data=val_ds, epochs=config["epochs"], 
     callbacks=[checkpoint_callback, early_stopping_callback]
 )
-
 # ===================================================================
 # EVALUATION AND VISUALIZATION
 # ===================================================================
@@ -83,10 +91,10 @@ plt.legend()
 
 plot_path = os.path.join(experiment_dir, "training_plots.png")
 plt.savefig(plot_path)
-print(f"Training plots saved in: {plot_path}")
+print(f"Plts saved in : {plot_path}")
 
 # Evaluation
-print("\nFinal evaluation on test dataset for with the best weights:")
+print("\nFinal evaluation on the test dataset with the best hyperparameter:")
 loss, accuracy = model.evaluate(test_ds)
-print(f"Test Loss: {loss:.4f}")
-print(f"Test Accuracy: {accuracy:.4f}")
+print(f"Perda no teste: {loss:.4f}")
+print(f"Acurácia no teste: {accuracy:.4f}")
