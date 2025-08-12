@@ -17,7 +17,7 @@ config = {
     "img_size": (224, 224),
     "batch_size": 32,
     "epochs": 20,
-    "learning_rate": 0.001,
+    "learning_rate": 0.01,
     "early_stopping_patience": 5,
     "model_architecture_name": "Minha_CNN_Base" 
 }

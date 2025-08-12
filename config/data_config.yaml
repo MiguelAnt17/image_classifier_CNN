@@ -1,0 +1,17 @@
+# Directory to the data
+data_dir: "data/"
+raw_data_dir: "data/raw/"
+processed_data_dir: "data/processed/"
+train_dir: "data/processed/train/"
+validation_dir: "data/processed/validation/"
+test_dir: "data/processed/test/"
+
+# Preprocessing parameters for the images
+image_size: [224, 224] 
+channels: 3 
+batch_size: 32
+
+# Dataset parameters
+num_classes: 10 
+class_names: ["cane", "cavallo", "elefante", "farfalla", "gallina", "gatto", "mucca", "pecora", "ragno", "scoiattolo"] 
+validation_split: 0.2 
