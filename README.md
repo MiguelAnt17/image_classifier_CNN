@@ -8,7 +8,8 @@ The dataset used for this project contains 28000 medium quality images belonging
 
 # Architecture
 
-- INSERT THE src/cnn_architecture.png
+<img width="824" height="188" alt="image" src="https://github.com/user-attachments/assets/fee89d67-b75b-4118-a478-6e1f55f74556" />
+
 
 - Input Layer: Image RGB with 224x224x3
 - Convolutional Block 1: Convolution 2D (32 filters 3x3, act. funct. ReLU) + Max Pooling (2x2)
