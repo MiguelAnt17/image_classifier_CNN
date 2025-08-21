@@ -9,17 +9,18 @@ from data_loader import load_datasets
 from model_architecture import create_model
 
 # ===================================================================
-# UPLOAD JSON FILE WITH THE PARAMETERS
+# HYPERPARAMETER AND CONSTANTS DEFINITION
 # ===================================================================
-config_path = 'params.json'  
-
-with open(config_path, 'r') as f:
-    config = json.load(f)
-
-config['img_size'] = tuple(config['img_size'])
-
-print("Configurations uploaded with success:")
-print(json.dumps(config, indent=4))
+config = {
+    "base_data_dir": "C:\\Users\\Programmer\\processed",
+    "experiments_base_dir": "C:\\Users\\Miguel António\\Desktop\\PORTFOLIO\\image_classifier\\experiments",
+    "img_size": (224, 224),
+    "batch_size": 32,
+    "epochs": 10,
+    "learning_rate": 0.005,
+    "early_stopping_patience": 5,
+    "model_architecture_name": "Minha_CNN_Base" 
+}
 
 # ===================================================================
 # UPLOAD THE DATA
