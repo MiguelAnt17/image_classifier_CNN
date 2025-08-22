@@ -98,3 +98,17 @@ print("\nFinal evaluation on the test dataset with the best hyperparameter:")
 loss, accuracy = model.evaluate(test_ds)
 print(f"Perda no teste: {loss:.4f}")
 print(f"Acurácia no teste: {accuracy:.4f}")
+
+
+
+metrics = {
+    "test_loss": loss,
+    "test_accuracy": accuracy
+}
+
+metrics_path = os.path.join(experiment_dir, "evaluation_metrics.json")
+
+with open(metrics_path, 'w') as f:
+    json.dump(metrics, f, indent=4)
+
+print(f"Measures saved in : {metrics_path}")
